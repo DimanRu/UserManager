@@ -1,0 +1,38 @@
+﻿<Window x:Class="UserManager.View.EditUserView"
+        x:Name="EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UserManager.View"
+        xmlns:converters="clr-namespace:UserManager.Converters"
+        xmlns:viewModel="clr-namespace:UserManager.ViewModel"
+        mc:Ignorable="d"
+        Title="EditUserView" Height="450" Width="800" WindowStyle="ToolWindow">
+    <Window.Resources>
+        <converters:BooleanNotConverter x:Key="BooleanNotConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <Label Content="Name: "/>
+            <TextBox Margin="5,0,5,10" x:Name="NameTextBox" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Department: "/>
+            <TextBox Margin="5,0,5,10" Text="{Binding User.Department}"/>
+            <Label Content="Salary: "/>
+            <TextBox x:Name="salaryTextBox" Margin="5,0,5,10" Text="{Binding User.Salary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Save" Margin="10" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=EditWindow}" IsEnabled="{Binding (Validation.HasError), ElementName=salaryTextBox, Mode=OneWay, Converter={StaticResource BooleanNotConverter}}"/>
+        </StackPanel>
+    </Grid>
+</Window>
